@@ -6,6 +6,7 @@
     using System.Text;
     using System.Threading.Tasks;
     using OOPGame.Core.Interfaces;
+    using OOPGame.Core.Infrastructure;
 
     public abstract class Creature : ICreature
     {
@@ -58,7 +59,7 @@
         public int WeakAttack()
         {
             //80% chance for a strike
-            if (ChanceForStrike(80))
+            if (RandomChance.Success(80))
             {
                 return this.Damage / 2;
             }
@@ -71,7 +72,7 @@
         public int StrongAttack()
         {
             //55% chance for a strike
-            if (ChanceForStrike(55))
+            if (RandomChance.Success(55))
             {
                 return this.Damage;
             }
@@ -84,7 +85,7 @@
         public int UltimateAttack()
         {
             //30% chance for a strike
-            if (ChanceForStrike(30))
+            if (RandomChance.Success(30))
             {
                 return this.Damage * 2;
             }
@@ -93,24 +94,6 @@
                 return 0;
             }
         }
-
-        protected bool ChanceForStrike(int chance)
-        {  
-            //lets say chance = 70, we have a random number between 1 and 100. 
-            //Then we have 70% chance to have a number lower than the random
-            Random random = new Random();
-            int rnd = random.Next(1, 101);
-
-            if (rnd < chance)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
         public abstract string FinalWords();
     }
 }

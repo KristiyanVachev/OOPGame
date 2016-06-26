@@ -16,11 +16,11 @@
 
         public int BasicArmor { get; set; }
 
-        public int ShieldArmor { get; set; }
+        public Shield Shield { get; set; }
 
         public int BasicDamage { get; set; }
 
-        public int SwordDamage { get; set; }
+        public Sword Sword { get; set; }
 
         public int PotionsCount { get; set; }
 
@@ -31,14 +31,14 @@
             this.Level = 1;
             this.HP = 100;
             this.BasicArmor = 5;
-            this.ShieldArmor = 10;
-            this.Armor = this.BasicArmor + this.ShieldArmor;
+            this.Shield = new Shield("Wooden Round Shield", 20);
+            this.Armor = this.BasicArmor + this.Shield.Armor;
             this.BasicDamage = 20;
-            this.SwordDamage = 30;
-            this.Damage = this.BasicDamage + this.SwordDamage;
+            this.Sword = new Sword("Short Sword", 30, "Blow");
+            this.Damage = this.BasicDamage + this.Sword.Damage;
             this.PotionsCount = 3;
             this.WeakAttackName = "Punch";
-            this.StrongAttackName = "Sword swing";
+            this.StrongAttackName = Sword.AttackName;
             this.UltimateAttackName = "MEGA cool Attack";
         }
 

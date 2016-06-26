@@ -1,16 +1,18 @@
 ﻿namespace OOPGame.Core.Interfaces
 {
+    using OOPGame.Core.Models;
+
     public interface IHero : ICreature
     {
         int Experience { get; set; }
 
         int PotionsCount { get; set; }
 
-        int ShieldArmor { get; set; }
+        Shield Shield { get; set; }
 
         int BasicArmor { get; set; }
 
-        int SwordDamage { get; set; }
+        Sword Sword { get; set; }
 
         int BasicDamage { get; set; }
 
