@@ -12,6 +12,8 @@
     {
         //fields
         private string name;
+        private readonly int[] attackChance = { 80, 60, 30 };
+        private readonly double[] attackPower = { 0.5, 1, 2 };
 
         //properties
         public string Name
@@ -43,6 +45,12 @@
 
         public int Level { get; set; }
 
+        public int[] AttackChance { get { return this.attackChance; } }
+
+        public double[] AttackPower { get { return this.attackPower; } }
+
+        public string[] AttackNames { get; set; }
+
         public string WeakAttackName { get; set; }
 
         public string StrongAttackName { get; set; }
@@ -56,6 +64,19 @@
         }
 
         //methods
+
+        public int Attack(int chance, double multiplier)
+        {
+            //80% chance for a strike
+            if (RandomChance.Success(chance))
+            {
+                return Convert.ToInt32(this.Damage * multiplier);
+            }
+            else
+            {
+                return 0;
+            }
+        }
         public int WeakAttack()
         {
             //80% chance for a strike

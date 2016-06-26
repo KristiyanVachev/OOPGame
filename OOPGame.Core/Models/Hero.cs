@@ -37,9 +37,10 @@
             this.Sword = new Sword("Short Sword", 30, "Blow");
             this.Damage = this.BasicDamage + this.Sword.Damage;
             this.PotionsCount = 3;
-            this.WeakAttackName = "Punch";
-            this.StrongAttackName = Sword.AttackName;
-            this.UltimateAttackName = "MEGA cool Attack";
+            this.AttackNames = new string[3];
+            this.AttackNames[0] = "Punch";
+            this.AttackNames[1] = Sword.AttackName;
+            this.AttackNames[2] = "MEGA cool Attack";
         }
 
         //Methods

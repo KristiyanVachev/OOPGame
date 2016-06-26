@@ -22,7 +22,7 @@
             for (int i = 0; i < monsters.Length; i++)
             {
                 //attack menu
-                Console.WriteLine("There is a {0} ahead.",monsters[i].Name);
+                Console.WriteLine("There is a {0} ahead.", monsters[i].Name);
                 Console.WriteLine("0. Fight");
                 Console.WriteLine("1. Flee");
                 int answer = int.Parse(Console.ReadLine());
@@ -31,9 +31,13 @@
                     //fight
                     while (hero.HP > 0 && monsters[i].HP > 0)
                     {
-                        Console.WriteLine("0. Attack with {0}",hero.WeakAttackName);
-                        Console.WriteLine("1. Attack with {0}", hero.StrongAttackName);
-                        Console.WriteLine("2. Attack with {0}", hero.UltimateAttackName);
+                        //Console.WriteLine("0. Attack with {0}", hero.WeakAttackName);
+                        //Console.WriteLine("1. Attack with {0}", hero.StrongAttackName);
+                        //Console.WriteLine("2. Attack with {0}", hero.UltimateAttackName);
+                        for (int j = 0; j < hero.AttackNames.Length; j++)
+                        {
+                          Console.WriteLine("{0}. Attack with {1}",j, hero.AttackNames[j]);
+                        }
                         Console.WriteLine("3. Drink potion");
                         answer = int.Parse(Console.ReadLine());
                         switch (answer)
@@ -42,19 +46,21 @@
                                 //attack with weak attack
                                 if (RandomChance.Success(100 - monsters[i].Armor))
                                 {
-                                    int damageDealth = hero.WeakAttack();
+                                    int damageDealth = hero.Attack(hero.AttackChance[answer], hero.AttackPower[answer]);
                                     if (damageDealth != 0)
                                     {
                                         monsters[i].HP -= damageDealth;
+                                        Console.WriteLine("You dealth {0} damage. {1} now has {2}HP", damageDealth, monsters[i].Name,monsters[i].HP);
                                     }
                                     else
                                     {
+                                        Console.WriteLine("You couldn't perform your {0}.",hero.AttackNames[answer]);
                                         //Attack failed
                                     }
                                 }
                                 else
                                 {
-                                    //miss because of armor
+                                    Console.WriteLine("{0}'s armor stopped your attack.",monsters[i].Name);
                                 }
                                 break;
                             case 1:
@@ -68,6 +74,7 @@
                                 break;
                             default:
                                 //invalid answer
+                                Console.WriteLine("Invalid answer. Try again");
                                 break;
                         }
 
