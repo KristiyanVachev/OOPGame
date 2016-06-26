@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace OOPGame.ConsoleClient
 {
-    class Program
+    class Startup
     {
-        static void Main(string[] args)
+        static void Main()
         {
         }
     }
