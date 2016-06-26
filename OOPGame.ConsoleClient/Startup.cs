@@ -27,7 +27,19 @@
                 Console.WriteLine("There is a {0} ahead.", monsters[i].Name);
                 Console.WriteLine("0. Fight");
                 Console.WriteLine("1. Flee");
-                int answer = int.Parse(Console.ReadLine());
+                int answer;
+                while (true)
+                {
+                    try
+                    {
+                        answer = int.Parse(Console.ReadLine());
+                        break;
+                    }
+                    catch (Exception)
+                    {
+                        Console.WriteLine("Invalid number. Try again.");
+                    }
+                }
                 if (answer == 0)
                 {
                     //fight
@@ -38,8 +50,19 @@
                             Console.WriteLine("{0}. Attack with {1}", j, hero.AttackNames[j]);
                         }
                         Console.WriteLine("3. Drink potion");
-                        answer = int.Parse(Console.ReadLine());
-
+                        //Catch exception
+                        while (true)
+                        {
+                            try
+                            {
+                                answer = int.Parse(Console.ReadLine());
+                                break;
+                            }
+                            catch (Exception)
+                            {
+                                Console.WriteLine("Invalid number. Try again.");
+                            }
+                        }
                         //Perform action based on answer
                         if (answer >= 0 && answer < 3)
                         {
@@ -55,7 +78,7 @@
                                 }
                                 else
                                 {
-                                    int ind = (i  - 1) / 2;
+                                    int ind = (i - 1) / 2;
                                     Console.WriteLine("You have found a new shield: {0}", shields[ind].Name);
                                     hero.Shield = shields[ind];
                                 }
