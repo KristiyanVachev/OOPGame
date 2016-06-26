@@ -17,9 +17,10 @@ namespace OOPGame.Core.Models
             this.Damage = damage;
             this.Armor = armor;
             this.Level = level;
-            this.WeakAttackName = weakAttack;
-            this.StrongAttackName = strongAttack;
-            this.UltimateAttackName = UltAttack;
+            this.AttackNames = new string[3];
+            this.AttackNames[0] = weakAttack;
+            this.AttackNames[1] = strongAttack;
+            this.AttackNames[2] = UltAttack;
         }
 
         //methods

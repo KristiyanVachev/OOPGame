@@ -17,5 +17,7 @@
         int BasicDamage { get; set; }
 
         void UsePotion();
+
+        void LevelUp();
     }
 }

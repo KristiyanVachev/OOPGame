@@ -29,7 +29,8 @@
         {
             this.Experience = 0;
             this.Level = 1;
-            this.HP = 100;
+            this.MaxHP = 100;
+            this.HP = this.MaxHP;
             this.BasicArmor = 5;
             this.Shield = new Shield("Wooden Round Shield", 20);
             this.Armor = this.BasicArmor + this.Shield.Armor;
@@ -65,6 +66,17 @@
         public override string FinalWords()
         {
             return "Ahh you bastard!";
+        }
+
+        public void LevelUp()
+        {
+            this.Level++;
+            this.MaxHP += 100;
+            this.HP = MaxHP;
+            this.BasicArmor += 5;
+            this.Armor = this.BasicArmor + this.Shield.Armor;
+            this.BasicDamage += 15;
+            this.Damage = this.BasicDamage + this.Sword.Damage;
         }
     }
 }
