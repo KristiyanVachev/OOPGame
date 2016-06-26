@@ -4,17 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{773B688C-86B5-475B-96AF-02E8555DF067}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{E97F1F9F-6882-4CC0-934A-620C4C8C82CE}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OOPGame.ConsoleClient</RootNamespace>
-    <AssemblyName>OOPGame.ConsoleClient</AssemblyName>
+    <RootNamespace>OOPGame.Core</RootNamespace>
+    <AssemblyName>OOPGame.Core</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -43,17 +40,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Startup.cs" />
+    <Compile Include="Interfaces\ICreature.cs" />
+    <Compile Include="Interfaces\IHero.cs" />
+    <Compile Include="Interfaces\IMonster.cs" />
+    <Compile Include="Interfaces\IPotion.cs" />
+    <Compile Include="Models\Creature.cs" />
+    <Compile Include="Models\Hero.cs" />
+    <Compile Include="Models\Monster.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\OOPGame\OOPGame.Core\OOPGame.Core.csproj">
-      <Project>{e97f1f9f-6882-4cc0-934a-620c4c8c82ce}</Project>
-      <Name>OOPGame.Core</Name>
-    </ProjectReference>
+    <Folder Include="Infrastructure\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
