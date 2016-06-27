@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OOPGame.Core.Interfaces;
-using OOPGame.Core.Models;
-
-namespace OOPGame.ConsoleClient
+﻿namespace OOPGame.ConsoleClient
 {
+    using OOPGame.Core.Interfaces;
+    using OOPGame.Core.Models;
+
     public static class Seed
     {
         //To-Do Impement seed with random monsters

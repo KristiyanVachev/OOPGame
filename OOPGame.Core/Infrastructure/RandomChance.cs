@@ -15,14 +15,7 @@ namespace OOPGame.Core.Infrastructure
             Random random = new Random();
             int rnd = random.Next(1, 101);
 
-            if (rnd < chance)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return rnd < chance;
         }
     }
 }

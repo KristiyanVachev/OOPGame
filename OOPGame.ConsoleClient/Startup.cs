@@ -1,10 +1,6 @@
 ﻿namespace OOPGame.ConsoleClient
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using OOPGame.Core.Models;
     using OOPGame.Core.Interfaces;
     using OOPGame.Core.Infrastructure;
@@ -20,82 +16,56 @@
             IMonster[] monsters = Seed.SeedMonsters();
             Sword[] swords = Seed.SeedSwords();
             Shield[] shields = Seed.SeedShields();
+
             bool finalBoss = false;
+            const int meetMonsterOpt = 2;
+            const int attackMenuOpt = 4;
+            int input;
+            int bossIndex = monsters.Length - 1;
 
             //Meet every monster.
             for (int i = 0; i < monsters.Length; i++)
             {
-                int answer;
                 //If you are up against the final monster -> special boss dialog.
-                if (i == monsters.Length - 1)
+                if (i == bossIndex)
                 {
                     finalBoss = true;
                 }
+
                 //Hero attack or flee menu
                 if (!finalBoss)
                 {
-                    Console.WriteLine("There is a {0} ahead.", monsters[i].Name);
-                    Console.WriteLine("0. Fight");
-                    Console.WriteLine("1. Flee");
-
-                    //Validation for input of attack or flee option
-                    while (true)
-                    {
-                        try
-                        {
-                            answer = int.Parse(Console.ReadLine());
-                            break;
-                        }
-                        catch (Exception)
-                        {
-                            Console.WriteLine("Invalid number. Try again.");
-                        }
-                    }
+                    Dialoge.MeetMonster(monsters[i]);
+                    input = Utillities.ValidateAnswer(meetMonsterOpt);
                 }
                 else //Boss dialog
-                {   
-                    Console.WriteLine("You have reached the mighty {0}. You must slay it to save your princess!", monsters[i].Name);
-                    answer = 0;
+                {
+                    Dialoge.MeetBoss(monsters[i]);
+                    input = 0;
                 }
 
                 //Option fight
-                if (answer == 0)
+                if (input == 0)
                 {
                     //Fight until one is dead
                     while (hero.HP > 0 && monsters[i].HP > 0)
                     {
-                        //Menu for attack options
-                        for (int j = 0; j < hero.AttackNames.Length; j++)
-                        {
-                            Console.WriteLine("{0}. Attack with {1}", j, hero.AttackNames[j]);
-                        }
-                        Console.WriteLine("3. Drink potion");
-                        //Validation for input of attack options
-                        while (true)
-                        {
-                            try
-                            {
-                                answer = int.Parse(Console.ReadLine());
-                                break;
-                            }
-                            catch (Exception)
-                            {
-                                Console.WriteLine("Invalid number. Try again.");
-                            }
-                        }
+                        Dialoge.HeroAttackOptions(hero);
+                        input = Utillities.ValidateAnswer(attackMenuOpt);
+
                         //Perform action based on answer
                         //If answer is an attack
-                        if (answer >= 0 && answer < 3)
+                        if (input >= 0 && input < 3)
                         {
                             //Hero attacks monster
-                            Attack(hero, monsters[i], answer);
+                            Utillities.Attack(hero, monsters[i], input);
                             //If monster is dead
                             if (monsters[i].HP <= 0)
                             {
                                 //Killing a commom monster
                                 if (!finalBoss)
                                 {
-                                    Console.WriteLine("You have defeated {0} and have reached a new level.", monsters[i].Name);
+                                    Dialoge.MonsterDefeated(monsters[i]);
                                     //To-Do Take weapon trought IWeapon interface
                                     if (i % 2 == 0)
                                     {
@@ -118,14 +88,14 @@
                                 //Killing the Boss
                                 else
                                 {
-                                    Console.WriteLine("You have defeated the ëvil {0} and have saved your princess.", monsters[i].Name);
+                                    Dialoge.BossDefeated(monsters[i]);
                                 }
 
                             }
                             //Monster still alive
                             else
                             {
-                                Attack(monsters[i], hero, 0);
+                                Utillities.Attack(monsters[i], hero, 0);
                             }
                             //If hero dies
                             if (hero.HP <= 0)
@@ -134,8 +104,8 @@
                                 break;
                             }
                         }
-                        //option Drink Potion
-                        else if (answer == 3)
+                        //answer left is 3, drink potion
+                        else
                         {
                             //drink potion
                             if (hero.PotionsCount > 0)
@@ -147,138 +117,27 @@
                             {
                                 Console.WriteLine("You don't have any potions.");
                             }
-                            Attack(monsters[i], hero, 0);
+                            Utillities.Attack(monsters[i], hero, 0);
                             if (hero.HP <= 0)
                             {
                                 Console.WriteLine("You have died and have failed your princess.");
                                 break;
                             }
                         }
-                        else
-                        {
-                            //invalid answer
-                            Console.WriteLine("Invalid answer. Try again");
-                        }
                     }
                 }
-                //Option flee
-                else if (answer == 1)
+                //Option left - 1. flee
+                else
                 {
                     //Monster always inflicts damage on a fleeing opponent
                     int damageSuffered = monsters[i].DamageOnFlee();
                     hero.HP -= damageSuffered;
-                    Console.WriteLine("While you were fleeing {0} dealth you {1}. You now have {2}HP.", monsters[i].Name, damageSuffered, hero.HP);
-
-                }
-                else //invalid answer
-                {
-                    Console.WriteLine("Invalid answer.");
-                    i--;
+                    Dialoge.DamageTakenOnFlee(monsters[i], hero, damageSuffered);
                 }
 
             }
 
         }
 
-        
-        static void Attack(ICreature attacker, ICreature deffender, int answer)
-        {
-            //Chance of armor deflecting the attack 
-            //If armor doesnt stop the attack.
-            if (RandomChance.Success(100 - deffender.Armor))
-            {
-                //Chance of dealing damage.
-                int damageDealth = attacker.Attack(attacker.AttackChance[answer], attacker.AttackPower[answer]);
-                //If any damage dealth
-                if (damageDealth != 0)
-                {
-                    deffender.HP -= damageDealth;
-                    //If defender is dead.
-                    if (deffender.HP > 0)
-                    {
-                        Console.WriteLine("{3} dealth {0} damage. {1} now has {2}HP", damageDealth, deffender.Name, deffender.HP, attacker.Name);
-                    }
-                    else
-                    {
-                        Console.WriteLine("{1} dealth {0} damage.", damageDealth, attacker.Name);
-                    }
-                }
-                //No damage dealth.
-                else
-                {
-                    //Attack failed
-                    Console.WriteLine("{1} couldn't perform {0}.", attacker.AttackNames[answer], attacker.Name);
-                }
-            }
-            else
-            {
-                //armor blocked
-                Console.WriteLine("{0}'s armor stopped {1} attack.", deffender.Name, attacker.Name);
-            }
-        }
-
-        //static void AttackMonster(Hero hero, IMonster monster, int answer)
-        //{
-        //    if (RandomChance.Success(100 - monster.Armor))
-        //    {
-        //        int damageDealth = hero.Attack(hero.AttackChance[answer], hero.AttackPower[answer]);
-        //        if (damageDealth != 0)
-        //        {
-        //            monster.HP -= damageDealth;
-        //            if (monster.HP > 0)
-        //            {
-        //                Console.WriteLine("You dealth {0} damage. {1} now has {2}HP", damageDealth, monster.Name, monster.HP);
-        //            }
-        //            else
-        //            {
-        //                Console.WriteLine("You dealth {0} damage.", damageDealth);
-        //            }
-        //        }
-        //        else
-        //        {
-        //            //Attack failed
-        //            Console.WriteLine("You couldn't perform your {0}.", hero.AttackNames[answer]);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        //armor blocked
-        //        Console.WriteLine("{0}'s armor stopped your attack.", monster.Name);
-        //    }
-        //}
-
-        //static void MonsterAttack(Hero hero, IMonster monster)
-        //{
-        //    //assign a random attack for the monster
-        //    Random rnd = new Random();
-        //    int answer = rnd.Next(0, 3);
-
-        //    if (RandomChance.Success(100 - hero.Armor))
-        //    {
-        //        int damageDealth = monster.Attack(monster.AttackChance[answer], monster.AttackPower[answer]);
-        //        if (damageDealth != 0)
-        //        {
-        //            hero.HP -= damageDealth;
-        //            if (hero.HP > 0)
-        //            {
-        //                Console.WriteLine("{0} dealth you {1} damage with {2}. You now have {3}HP.", monster.Name, damageDealth, monster.AttackNames[answer], hero.HP);
-        //            }
-        //            else
-        //            {
-        //                Console.WriteLine("{0} dealth you {1} damage.", monster.Name, damageDealth);
-        //            }
-        //        }
-        //        else
-        //        {
-        //            //Attack failed
-        //            Console.WriteLine("{0} couldn't perform {1}.", monster.Name, monster.AttackNames[answer]);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        //armor blocked
-        //        Console.WriteLine("Your armor stopped {0}'s attack.", monster.Name);
-        //    }
-        //}
     }
 }
