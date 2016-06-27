@@ -22,20 +22,23 @@
             Shield[] shields = Seed.SeedShields();
             bool finalBoss = false;
 
+            //Meet every monster.
             for (int i = 0; i < monsters.Length; i++)
             {
                 int answer;
+                //If you are up against the final monster -> special boss dialog.
                 if (i == monsters.Length - 1)
                 {
                     finalBoss = true;
                 }
-                //attack menu
+                //Hero attack or flee menu
                 if (!finalBoss)
                 {
                     Console.WriteLine("There is a {0} ahead.", monsters[i].Name);
                     Console.WriteLine("0. Fight");
                     Console.WriteLine("1. Flee");
 
+                    //Validation for input of attack or flee option
                     while (true)
                     {
                         try
@@ -49,23 +52,25 @@
                         }
                     }
                 }
-                else
-                {
+                else //Boss dialog
+                {   
                     Console.WriteLine("You have reached the mighty {0}. You must slay it to save your princess!", monsters[i].Name);
                     answer = 0;
                 }
 
+                //Option fight
                 if (answer == 0)
                 {
-                    //fight
+                    //Fight until one is dead
                     while (hero.HP > 0 && monsters[i].HP > 0)
                     {
+                        //Menu for attack options
                         for (int j = 0; j < hero.AttackNames.Length; j++)
                         {
                             Console.WriteLine("{0}. Attack with {1}", j, hero.AttackNames[j]);
                         }
                         Console.WriteLine("3. Drink potion");
-                        //Catch exception
+                        //Validation for input of attack options
                         while (true)
                         {
                             try
@@ -79,14 +84,19 @@
                             }
                         }
                         //Perform action based on answer
+                        //If answer is an attack
                         if (answer >= 0 && answer < 3)
                         {
+                            //Hero attacks monster
                             Attack(hero, monsters[i], answer);
+                            //If monster is dead
                             if (monsters[i].HP <= 0)
                             {
+                                //Killing a commom monster
                                 if (!finalBoss)
                                 {
                                     Console.WriteLine("You have defeated {0} and have reached a new level.", monsters[i].Name);
+                                    //To-Do Take weapon trought IWeapon interface
                                     if (i % 2 == 0)
                                     {
                                         int ind = i / 2;
@@ -105,22 +115,26 @@
 
                                     break;
                                 }
+                                //Killing the Boss
                                 else
                                 {
                                     Console.WriteLine("You have defeated the ëvil {0} and have saved your princess.", monsters[i].Name);
                                 }
 
                             }
+                            //Monster still alive
                             else
                             {
                                 Attack(monsters[i], hero, 0);
                             }
+                            //If hero dies
                             if (hero.HP <= 0)
                             {
                                 Console.WriteLine("You have died and have failed your princess.");
                                 break;
                             }
                         }
+                        //option Drink Potion
                         else if (answer == 3)
                         {
                             //drink potion
@@ -146,17 +160,11 @@
                             Console.WriteLine("Invalid answer. Try again");
                         }
                     }
-                    //declare result
-                    //if (hero.HP < 0)
-                    //{
-                    //    Console.WriteLine("You have died and have failed your princess.");
-                    //    break;
-                    //}
-
                 }
+                //Option flee
                 else if (answer == 1)
                 {
-                    //flee
+                    //Monster always inflicts damage on a fleeing opponent
                     int damageSuffered = monsters[i].DamageOnFlee();
                     hero.HP -= damageSuffered;
                     Console.WriteLine("While you were fleeing {0} dealth you {1}. You now have {2}HP.", monsters[i].Name, damageSuffered, hero.HP);
@@ -172,14 +180,20 @@
 
         }
 
+        
         static void Attack(ICreature attacker, ICreature deffender, int answer)
         {
+            //Chance of armor deflecting the attack 
+            //If armor doesnt stop the attack.
             if (RandomChance.Success(100 - deffender.Armor))
             {
+                //Chance of dealing damage.
                 int damageDealth = attacker.Attack(attacker.AttackChance[answer], attacker.AttackPower[answer]);
+                //If any damage dealth
                 if (damageDealth != 0)
                 {
                     deffender.HP -= damageDealth;
+                    //If defender is dead.
                     if (deffender.HP > 0)
                     {
                         Console.WriteLine("{3} dealth {0} damage. {1} now has {2}HP", damageDealth, deffender.Name, deffender.HP, attacker.Name);
@@ -189,6 +203,7 @@
                         Console.WriteLine("{1} dealth {0} damage.", damageDealth, attacker.Name);
                     }
                 }
+                //No damage dealth.
                 else
                 {
                     //Attack failed

@@ -10,6 +10,7 @@ namespace OOPGame.ConsoleClient
 {
     public static class Seed
     {
+        //To-Do Impement seed with random monsters
         public static IMonster[] SeedMonsters()
         {
             IMonster[] monsters =
