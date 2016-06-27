@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Action.cs" />
     <Compile Include="Dialoge.cs" />
     <Compile Include="Seed.cs" />
     <Compile Include="Startup.cs" />

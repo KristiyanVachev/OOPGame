@@ -7,7 +7,7 @@
     using System.Threading.Tasks;
     using OOPGame.Core.Interfaces;
 
-    public class Shield : IWeapon
+    public class Shield : IShield
     {
         //properties
         public string Name { get; set; }

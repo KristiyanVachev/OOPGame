@@ -3,7 +3,6 @@
     using System;
     using OOPGame.Core.Models;
     using OOPGame.Core.Interfaces;
-    using OOPGame.Core.Infrastructure;
 
     class Startup
     {
@@ -14,8 +13,7 @@
             Hero hero = new Hero(name);
 
             IMonster[] monsters = Seed.SeedMonsters();
-            Sword[] swords = Seed.SeedSwords();
-            Shield[] shields = Seed.SeedShields();
+            IWeapon[] weapons = Seed.SeedRewards();
 
             bool finalBoss = false;
             const int meetMonsterOpt = 2;
@@ -55,10 +53,10 @@
 
                         //Perform action based on answer
                         //If answer is an attack
-                        if (input >= 0 && input < 3)
+                        if (input >= 0 && input < attackMenuOpt - 1)
                         {
                             //Hero attacks monster
-                            Utillities.Attack(hero, monsters[i], input);
+                            Action.Attack(hero, monsters[i], input);
                             //If monster is dead
                             if (monsters[i].HP <= 0)
                             {
@@ -66,23 +64,8 @@
                                 if (!finalBoss)
                                 {
                                     Dialoge.MonsterDefeated(monsters[i]);
-                                    //To-Do Take weapon trought IWeapon interface
-                                    if (i % 2 == 0)
-                                    {
-                                        int ind = i / 2;
-                                        Console.WriteLine("You have found a new sword: {0}", swords[ind].Name);
-                                        hero.Sword = swords[ind];
-                                    }
-                                    else
-                                    {
-                                        int ind = (i - 1) / 2;
-                                        Console.WriteLine("You have found a new shield: {0}", shields[ind].Name);
-                                        hero.Shield = shields[ind];
-                                    }
 
-                                    hero.LevelUp();
-                                    Console.WriteLine("{0} - HP: {1} - Damage: {2} - Armor: {3}", hero.Name, hero.HP, hero.Damage, hero.Armor);
-
+                                    Action.GetReward(weapons[i], hero);
                                     break;
                                 }
                                 //Killing the Boss
@@ -95,32 +78,23 @@
                             //Monster still alive
                             else
                             {
-                                Utillities.Attack(monsters[i], hero, 0);
+                                Action.Attack(monsters[i], hero, 0);
                             }
                             //If hero dies
                             if (hero.HP <= 0)
                             {
-                                Console.WriteLine("You have died and have failed your princess.");
+                                Dialoge.HeroDied();
                                 break;
                             }
                         }
                         //answer left is 3, drink potion
                         else
                         {
-                            //drink potion
-                            if (hero.PotionsCount > 0)
-                            {
-                                hero.UsePotion();
-                                Console.WriteLine("You used a potion and now have {0}HP.", hero.HP);
-                            }
-                            else
-                            {
-                                Console.WriteLine("You don't have any potions.");
-                            }
-                            Utillities.Attack(monsters[i], hero, 0);
+                            Action.DrinkPotion(hero);
+                            Action.Attack(monsters[i], hero, 0);
                             if (hero.HP <= 0)
                             {
-                                Console.WriteLine("You have died and have failed your princess.");
+                                Dialoge.HeroDied();
                                 break;
                             }
                         }
@@ -132,7 +106,15 @@
                     //Monster always inflicts damage on a fleeing opponent
                     int damageSuffered = monsters[i].DamageOnFlee();
                     hero.HP -= damageSuffered;
-                    Dialoge.DamageTakenOnFlee(monsters[i], hero, damageSuffered);
+                    if (hero.HP <= 0)
+                    {
+                        Dialoge.HeroDiedFleeing();
+                        break;
+                    }
+                    else
+                    {
+                        Dialoge.DamageTakenOnFlee(monsters[i], hero, damageSuffered);
+                    }
                 }
 
             }

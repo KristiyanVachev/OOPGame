@@ -19,39 +19,17 @@
             return monsters;
         }
 
-        public static Sword[] SeedSwords()
+        public static IWeapon[] SeedRewards()
         {
-            Sword[] swords =
+            IWeapon[] weapons =
             {
                 new Sword("Bastard Sword", 30, "Thrust"),
+                new Shield("Roman Shield", 40),
                 new Sword("Long Sword", 60, "Decapitating")
             };
-            return swords;
 
+            return weapons;
         }
-
-        public static Shield[] SeedShields()
-        {
-            Shield[] shields =
-            {
-                new Shield("Roman Shield", 40),
-            };
-
-            return shields;
-        }
-
-        //public static IWeapon[] SeedRewards()
-        //{
-        //    IWeapon[] weapons =
-        //    {
-        //        new Sword("Bastard Sword", 30, "Thrust"),
-        //        new Shield("Roman Shield", 40),
-        //        new Sword("Long Sword", 60, "Decapitating")
-
-        //    };
-
-        //    return weapons;
-        //}
 
     }
 }

@@ -1,7 +1,7 @@
 ﻿namespace OOPGame.Core.Interfaces
 {
-    interface IShield : IWeapon
+    public interface IShield : IWeapon
     {
-        int armor { get; set; }
+        int Armor { get; set; }
     }
 }
