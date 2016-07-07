@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Action.cs" />
     <Compile Include="Dialoge.cs" />
+    <Compile Include="Engine.cs" />
     <Compile Include="Seed.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

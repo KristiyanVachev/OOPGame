@@ -22,7 +22,7 @@
                     //If defender is dead.
                     if (deffender.HP > 0)
                     {
-                        Console.WriteLine("{3} dealth {0} damage. {1} now has {2}HP", damageDealth, deffender.Name, deffender.HP, attacker.Name);
+                        Console.WriteLine($"{attacker.Name} dealth {damageDealth} damage. {deffender.Name} now has {deffender.HP}HP");
                     }
                     else
                     {
